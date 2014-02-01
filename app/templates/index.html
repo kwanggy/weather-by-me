@@ -65,8 +65,17 @@ $(document).ready(function() {
       var pic = post['author']['pic'];
       var commentsLength = post['comments'].length
       var created_at = post['created_at']
-      alert(created_at);
-      var div = top.feedController.getCard(id, pic, title, name, image, commentsLength);
+      // alert('created at: ')
+      // alert(created_at);
+      var diff = new Date().valueOf() - created_at*1000;
+      var diffHour = Math.round(diff/3600000);
+
+      var diffStr = 'Just now';
+      if (diffHour == 1) diffStr = '1 hour ago';
+      else if (diffHour > 1) diffStr = diffHour + ' hours ago';
+
+
+      var div = top.feedController.getCard(id, pic, title, name, image, commentsLength, diffStr);
       console.log('div');
       console.log(div);
       $('#contents-container').append(div);

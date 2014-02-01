@@ -51,7 +51,7 @@ FeedController.prototype = {
 
 		});
 	},
-	getCard: function(id, pic, title, name, image, commentsLength) {
+	getCard: function(id, pic, title, name, image, commentsLength, diffHourStr) {
         a =	'<div class="row">' + 
 		    '<div class="col-lg-6">' + 
 		      '<div id="card' + id + '" class="card" >' + 
@@ -59,7 +59,7 @@ FeedController.prototype = {
 		        '<img src="' + pic + '" class="img-circle card-component card-profile" style=""/>' + 
 		        '<div class="horizontal-divider card-component card-divider"></div>' + 
 		        '<div class="card-component card-title">' + title + '</div>' + 
-		        '<div class="card-component card-time">2 hours ago</div>' +
+		        '<div class="card-component card-time">' + diffHourStr + '</div>' +
 		        '<img class="card-image" id="card-image' + id + '" src="' + image + '"/>' + 
 		        '<div class="pull-left card-replies-link card-component" id="' + id + '">comments</div>' + 
 		        '<div class="pull-right card-reply-link card-component" id="add-reply' + id + '" data-toggle="modal" data-target="#add-reply-modal">add comment</div>' + 
