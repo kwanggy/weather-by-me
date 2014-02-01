@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-from .models import User, Session
+from .models import User, Session, Post
 from .config import conf
 from util import log
 
@@ -41,8 +41,10 @@ def session_required():
     def decorator(f):
         def wrapped():
             if request.method == 'GET':
+                log(request.args)
                 key = request.args.get('session_key', None)
             elif request.method == 'POST':
+                log(request.form)
                 key = request.form.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
@@ -50,10 +52,10 @@ def session_required():
             s = Session.query.filter_by(key=key).first()
             if s == None:
                 raise Exception('session key is not valid')
-            if s.user == None:
+            if s.owner == None:
                 log('****', 'session is not valid', s.id)
                 raise Exception('session is not valid')
-            return f(s.user.first())
+            return f(s.owner.first())
         return update_wrapper(wrapped, f)
     return decorator
 
@@ -62,17 +64,17 @@ def userinfo_required(create=False):
         def wrapped():
             if 'email' not in request.form:
                 raise Exception('email address is required')
-            eamil = request.form['email']
+            email = request.form['email']
 
             if 'pw' not in request.form:
                 raise Exception('password is required')
             pw = request.form['pw']
 
-            if 'name' not in request.form:
-                raise Exception('name is required')
-            name = request.form['name']
-
             if create:
+                if 'name' not in request.form:
+                    raise Exception('name is required')
+                name = request.form['name']
+
                 u = User(email, pw, name)
                 db.session.add(u)
                 db.session.commit()
@@ -80,6 +82,8 @@ def userinfo_required(create=False):
                 u = User.query.filter_by(email=email).first()
                 if u == None:
                     raise Exception('matching email address does not exist')
+                if not u.check_password(pw):
+                    raise Exception('password does not match')
             return f(u)
         return update_wrapper(wrapped, f)
     return decorator
@@ -89,7 +93,7 @@ def newSessionKey(user):
     user.set_session(s)
     db.session.add(s)
     db.session.commit()
-    return user.session_key
+    return dict(session_key=user.session_key)
 
 
 @app.route('/')
@@ -133,6 +137,6 @@ def api_signin(user):
 
 @app.route('/api/post', methods=['GET', 'POST'])
 @json_response()
-@userinfo_required()
+@session_required()
 def api_post(user):
     return dict()
