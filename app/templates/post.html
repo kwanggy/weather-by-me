@@ -1,42 +1,64 @@
 {% extends "layout.html" %}
 {% block body %}
+<style>
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+}
+.fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+</style>
 <div class="container jumbotron" style="text-align:left">
 
-  <form class="form-signin" role="form" style="
+  <form class="form-signin" method="post" role="form" style="
     max-width: 330px;
     margin:0 auto;
 ">
-        <h2 class="form-signin-heading">Add New Post</h2>
+    <h2 class="form-signin-heading">Add New Post</h2>
 
-                  <div class="form-group" style="margin-bottom:0">
-                    <label for="inputEmail" class="col-lg-2 control-label">Title</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" id="inputEmail" placeholder="Title">
-                    </div>
-                  </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label for="inputEmail" class="col-lg-2 control-label">Title</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" id="inputEmail" placeholder="Title">
+          </div>
+      </div>
 
-                  <div class="form-group" style="margin-bottom:0">
-                    <label for="inputPassword" class="col-lg-2 control-label">Text</label>
-                    <div class="col-lg-10">
-                      <textarea class="form-control" rows='4' placeholder="Enter texts..."></textarea>
-                    </div>
-                  </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label for="inputPassword" class="col-lg-2 control-label">Text</label>
+        <div class="col-lg-10">
+          <textarea class="form-control" rows='4' placeholder="Enter texts..."></textarea>
+        </div>
+      </div>
 
-                  <div class="form-group" style="margin-bottom:0">
-                    <label for="inputPassword" class="col-lg-2 control-label">Image</label>
-                    <input type='file' style="padding-left:15px">
-                  </div>
-
-          <div class="pull-right col-lg-12">
-            <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Post</button>
+      <div class="form-group" style="margin-bottom:0">
+        <label for="inputImage" class="col-lg-2 control-label">Image</label>
+        <div class="col-lg-10 fileinputs" style="padding-left:15px">                  
+          <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="form-control" />
+          <div class="fileUpload btn btn-primary" style="font-size:small;padding:8px 14px"> 
+            <span>Upload</span>
+            <input id="uploadBtn" type="file" class="upload" style="width:73px;height:36px"/>
           </div>
         </div>
-        
+      </div>
 
-
-
-
+      <div class="pull-right col-lg-12">
+        <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Post</button>
+      </div>    
   </form>
-
 </div> <!-- /container -->
+<script>
+document.getElementById("uploadBtn").onchange = function () {
+    var rawstring = this.value.trim().split("\\");
+    document.getElementById("uploadFile").value = rawstring[rawstring.length-1];
+};
+</script>
 {% endblock %}

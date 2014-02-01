@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-from .models import User, Session
+from .models import User, Session, Post
 from .config import conf
 from util import log
 
@@ -14,11 +14,11 @@ def json_response():
     def decorator(f):
         def wrapped():
             try:
-                log(request.args)
+                log("args", request.args)
             except:
                 pass
             try:
-                log(request.form)
+                log("form", request.form)
             except:
                 pass
             try:
@@ -50,36 +50,41 @@ def session_required():
             s = Session.query.filter_by(key=key).first()
             if s == None:
                 raise Exception('session key is not valid')
-            if s.user == None:
+            if s.owner == None:
                 log('****', 'session is not valid', s.id)
                 raise Exception('session is not valid')
-            return f(s.user.first())
+            return f(s.owner.first())
         return update_wrapper(wrapped, f)
     return decorator
 
 def userinfo_required(create=False):
     def decorator(f):
         def wrapped():
-            if 'email' not in request.form:
+            email = request.form.get('email', None)
+            if email == None:
                 raise Exception('email address is required')
-            eamil = request.form['email']
 
-            if 'pw' not in request.form:
+            pw = request.form.get('pw', None)
+            if 'pw' == None:
                 raise Exception('password is required')
-            pw = request.form['pw']
-
-            if 'name' not in request.form:
-                raise Exception('name is required')
-            name = request.form['name']
 
             if create:
+                name = request.form.get('name', None)
+                if name == None:
+                    raise Exception('name is required')
+                pic = request.form.get('pic', None)
+                log('pic', pic)
+
                 u = User(email, pw, name)
                 db.session.add(u)
+                u.setProfilePic(pic)
                 db.session.commit()
             else:
                 u = User.query.filter_by(email=email).first()
                 if u == None:
                     raise Exception('matching email address does not exist')
+                if not u.check_password(pw):
+                    raise Exception('password does not match')
             return f(u)
         return update_wrapper(wrapped, f)
     return decorator
@@ -89,7 +94,7 @@ def newSessionKey(user):
     user.set_session(s)
     db.session.add(s)
     db.session.commit()
-    return user.session_key
+    return dict(session_key=user.session_key)
 
 
 @app.route('/')
@@ -111,6 +116,7 @@ def reset():
         if not conf['sys']['test-mode']:
             db.engine.execute('DROP TABLE "user" CASCADE')
             db.engine.execute('DROP TABLE "session" CASCADE')
+            db.engine.execute('DROP TABLE "post" CASCADE')
         else:
             db.drop_all()
     except:
@@ -129,3 +135,30 @@ def api_signup(user):
 @userinfo_required()
 def api_signin(user):
     return newSessionKey(user)
+
+@app.route('/api/post', methods=['GET', 'POST'])
+@json_response()
+@session_required()
+def api_post(user):
+    data = request.args if request.method == 'GET' else request.form
+    post_id = data.get('post_id', None)
+    if request.method == 'GET':
+        if post_id == None:
+            raise Exception('post id is required')
+        p = Post.query.filter_by(id=post_id)
+    elif request.method == 'POST':
+        text = data.get('text', None)
+        if text == None:
+            raise Exception('text is required')
+        image = data.get('image', None)
+        if image == None:
+            raise Exception('image is required')
+        p = Post(user, text, image)
+    db.session.add(p)
+    db.session.commit()
+    return dict(
+        created_at = p.created_at,
+        author_id = p.author_id,
+        text = p.text,
+        image = p.image,
+    )
