@@ -65,7 +65,7 @@ $(document).ready(function() {
       var pic = post['author']['pic'];
       var commentsLength = post['comments'].length
       var created_at = post['created_at']
-
+      alert(created_at);
       var div = top.feedController.getCard(id, pic, title, name, image, commentsLength);
       console.log('div');
       console.log(div);
