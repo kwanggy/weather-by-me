@@ -20,7 +20,7 @@
 </style>        
 <div class="container jumbotron" style="text-align:left">
 
-  <form class="form-signin" method="post" role="form" style="
+  <form id="signup-form" class="form-signin" method="post" role="form" style="
     max-width: 330px;
     margin:0 auto;">
     <h2 class="form-signin-heading">Sign up</h2>
@@ -28,14 +28,14 @@
       <div class="form-group">
         <label for="inputEmail" class="col-lg-2 control-label">Email</label>
           <div class="col-lg-10">
-            <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+            <input name='email' type="text" class="form-control" id="inputEmail" placeholder="Email">
           </div>
       </div>
 
       <div class="form-group">
         <label for="inputPassword" class="col-lg-2 control-label">Password</label>
         <div class="col-lg-10">
-          <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+          <input name="pw" type="password" class="form-control" id="inputPassword" placeholder="Password">
         </div>
       </div>
 
@@ -45,11 +45,18 @@
             <input type="password" class="form-control" id="inputPassword" placeholder="Password">
           </div>
       </div>
-                  
+      
+      <div class="form-group">
+        <label for="inputName" class="col-lg-2 control-label">Name</label>
+          <div class="col-lg-10">
+            <input name="name" type="password" class="form-control" id="inputName" placeholder="Password">
+          </div>
+      </div>
+
       <div class="form-group" style="margin-bottom:0">
         <label for="inputImage" class="col-lg-2 control-label">Profile Image</label>
         <div class="col-lg-10 fileinputs" style="padding-left:15px">                  
-          <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="form-control" />
+          <input name="pic" id="uploadFile" placeholder="Choose File" disabled="disabled" class="form-control" />
           <div class="fileUpload btn btn-primary" style="font-size:small;padding:8px 14px"> 
             <span>Upload</span>
             <input id="uploadBtn" type="file" class="upload" style="width:73px;height:36px"/>
@@ -59,16 +66,22 @@
 
       <div class="form-group btns" style="margin-top:10px">
         <div class="pull-right col-lg-12">
-          <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Submit</button>
+          <button id="send" type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Submit</button>
         </div>
       </div>
   </form>
 
 </div> <!-- /container -->
 <script>
-document.getElementById("uploadBtn").onchange = function () {
-    var rawstring = this.value.trim().split("\\");
-    document.getElementById("uploadFile").value = rawstring[rawstring.length-1];
-};
+$(document).ready(function() {
+  document.getElementById("uploadBtn").onchange = function () {
+      var rawstring = this.value.trim().split("\\");
+      document.getElementById("uploadFile").value = rawstring[rawstring.length-1];
+  };
+
+  $('#send').click(function() {
+    signup("#signup-form");
+  })
+}
 </script>
 {% endblock %}
