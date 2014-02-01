@@ -16,8 +16,8 @@
         <div class="card-component card-title">Photo by Yuna Kim</div>
         <div class="card-component card-time">2 hours ago</div>
         <img class="card-image" id="card-image1" src="../static/img/posts/a.png"/>
-        <div class="card-component card-replies-link" id='1'>6 comments</div>
-        
+        <div class="pull-left card-replies-link card-component" id='1'>6 comments</div>
+        <div class="pull-right card-reply-link card-component" id='add-reply1'>add comment</div>
       </div>
     </div>
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
   feedController.init();
 
   top.repliesMap = {
-    '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
+    '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
   }
 });
 </script>
