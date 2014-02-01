@@ -6,15 +6,36 @@
     max-width: 330px;
     margin:0 auto;
 ">
-        <h2 class="form-signin-heading">Sign in</h2>
-        <input type="email" class="form-control" placeholder="Email address" required="" autofocus="">
-        <input type="password" class="form-control" placeholder="Password" required="">
-        <div class="form-group btns" style="margin-top:10px">
-          <div class="pull-right col-lg-12">
-            <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Sign In</button>
+    <h2 class="form-signin-heading">Sign in</h2>
+
+      <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+          <div class="col-lg-10">
+            <input id="email" name='email' type="email" class="form-control" placeholder="Email address" required="" autofocus="">  
           </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+        <div class="col-lg-10">
+          <input id="pw" name='pw' type="password" class="form-control" placeholder="Password" required="">
         </div>
+      </div>
+
+
+      <div class="form-group btns" style="margin-top:10px">
+        <div class="pull-right col-lg-12">
+          <a id="send" class="btn btn-success" style="font-size:small;padding:8px 14px">Sign In</a>
+        </div>
+      </div>
   </form>
 
 </div> <!-- /container -->
+<script>
+$(document).ready(function() {
+  $('#send').click(function() {
+    signin($('#email').value, $('#pw').value, function() {});
+  });
+});
+</script>
 {% endblock %}

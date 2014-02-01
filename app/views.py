@@ -40,16 +40,17 @@ def json_response():
 def session_required():
     def decorator(f):
         def wrapped():
-            if request.method == 'GET':
-                key = request.args.get('session_key', None)
-            elif request.method == 'POST':
-                key = request.form.get('session_key', None)
+            data = request.args if request.method == 'GET' else request.form
+            key = None
+            # key = session.get('session_key', None)
+            session.pop('session_key', None)
+            key = key or data.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
 
             s = Session.query.filter_by(key=key).first()
             if s == None:
-                raise Exception('session key is not valid')
+                raise Exception('session was not found')
             if s.owner == None:
                 log('****', 'session is not valid', s.id)
                 raise Exception('session is not valid')
@@ -72,11 +73,12 @@ def userinfo_required(create=False):
                 name = request.form.get('name', None)
                 if name == None:
                     raise Exception('name is required')
-                pic = request.form.get('pic', None)
+                pic = request.files.get('pic', None)
                 log('pic', pic)
 
                 u = User(email, pw, name)
                 db.session.add(u)
+                db.session.commit()
                 u.setProfilePic(pic)
                 db.session.commit()
             else:
@@ -85,6 +87,8 @@ def userinfo_required(create=False):
                     raise Exception('matching email address does not exist')
                 if not u.check_password(pw):
                     raise Exception('password does not match')
+
+            session['session_key'] = u.session_key
             return f(u)
         return update_wrapper(wrapped, f)
     return decorator
@@ -141,11 +145,16 @@ def api_signin(user):
 @session_required()
 def api_post(user):
     data = request.args if request.method == 'GET' else request.form
-    post_id = data.get('post_id', None)
     if request.method == 'GET':
-        if post_id == None:
-            raise Exception('post id is required')
-        p = Post.query.filter_by(id=post_id)
+        post_id = data.get('post_id', None)
+        lat = data.get('lat', None)
+        lng = data.get('lng', None)
+        if post_id == None or lat == None or lng == None:
+            raise Exception('post id or (latitude and longitude) is required')
+        p = Post.query.filter_by(id=post_id).all()
+        p = p.all() if post_id == None else p.first()
+        if p == None:
+            raise Exception('post id does not exist')
     elif request.method == 'POST':
         text = data.get('text', None)
         if text == None:
@@ -154,11 +163,6 @@ def api_post(user):
         if image == None:
             raise Exception('image is required')
         p = Post(user, text, image)
-    db.session.add(p)
-    db.session.commit()
-    return dict(
-        created_at = p.created_at,
-        author_id = p.author_id,
-        text = p.text,
-        image = p.image,
-    )
+        db.session.add(p)
+        db.session.commit()
+    return p.toJson()
