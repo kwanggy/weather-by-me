@@ -39,13 +39,9 @@
         <div class="card-component card-title">Photo by Yuna Kim</div>
         <div class="card-component card-time">2 hours ago</div>
         <img class="card-image" id="card-image1" src="../static/img/posts/a.png"/>
-        <div class="pull-left card-replies-link card-component" id='1'>comments</div>
-        <div class="pull-right card-reply-link card-component" id='add-reply1' data-toggle="modal" data-target="#add-reply-modal">add comment</div>
+        <div class="pull-left card-replies-link card-component" id="1">comments</div>
+        <div class="pull-right card-reply-link card-component" id="add-reply1" data-toggle="modal" data-target="#add-reply-modal">add comment</div>
       </div>
-    </div>
-
-    <div class="col-lg-6">
-      
     </div>
   </div>
 
@@ -56,13 +52,41 @@
 <script src="/static/js/feed_controller.js"></script>
 <script>
 $(document).ready(function() {
-  var feedController = new FeedController();
+  top.feedController = new FeedController();
   feedController.init();
+  top.commentsMap = {};
+  function initialize(res, data) {
+    for (i = 0; i < data.length; i++) {
+      var post = data[i];
+      var title = post['text'];
+      var id = post['post_id'];
+      var image = post['image'];
+      var name = post['author']['name'];
+      var pic = post['author']['pic'];
+      var commentsLength = post['comments'].length
+      var created_at = post['created_at']
 
+      var div = top.feedController.getCard(id, pic, title, name, image, commentsLength);
+      $('.container').append(div);
+
+      var comments = post['comments']
+      var commentsList = [];
+      for (t = 0; t < comments.length; t++) {
+        var comment = comments[t];
+        l.push({
+            'profile_url' : comment['author']['pic']
+            'name' : comment['author']['name']
+            'reply' : comment['text']
+        });
+      }
+      top.commentsMap[i] = l;
+    }
+  }
+  /*
   top.repliesMap = {
     '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
   }
-
+  */
   for (key in top.repliesMap) {
     $('#' + key).html(top.repliesMap[key].length + " comments");
   }
