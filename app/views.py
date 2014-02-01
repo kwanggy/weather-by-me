@@ -207,7 +207,7 @@ def api_post(user):
 @app.route('/api/comment', methods=['POST'])
 @json_response()
 @session_required()
-def api_post(user):
+def api_comment(user):
     data = request.args if request.method == 'GET' else request.form
     if request.method == 'POST':
         text = data.get('text', None)
