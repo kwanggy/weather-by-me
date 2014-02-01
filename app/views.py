@@ -14,11 +14,11 @@ def json_response():
     def decorator(f):
         def wrapped():
             try:
-                log(request.args)
+                log("args", request.args)
             except:
                 pass
             try:
-                log(request.form)
+                log("form", request.form)
             except:
                 pass
             try:
@@ -41,10 +41,8 @@ def session_required():
     def decorator(f):
         def wrapped():
             if request.method == 'GET':
-                log(request.args)
                 key = request.args.get('session_key', None)
             elif request.method == 'POST':
-                log(request.form)
                 key = request.form.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
@@ -62,21 +60,24 @@ def session_required():
 def userinfo_required(create=False):
     def decorator(f):
         def wrapped():
-            if 'email' not in request.form:
+            email = request.form.get('email', None)
+            if email == None:
                 raise Exception('email address is required')
-            email = request.form['email']
 
-            if 'pw' not in request.form:
+            pw = request.form.get('pw', None)
+            if 'pw' == None:
                 raise Exception('password is required')
-            pw = request.form['pw']
 
             if create:
-                if 'name' not in request.form:
+                name = request.form.get('name', None)
+                if name == None:
                     raise Exception('name is required')
-                name = request.form['name']
+                pic = request.form.get('pic', None)
+                log('pic', pic)
 
                 u = User(email, pw, name)
                 db.session.add(u)
+                u.setProfilePic(pic)
                 db.session.commit()
             else:
                 u = User.query.filter_by(email=email).first()
@@ -139,4 +140,25 @@ def api_signin(user):
 @json_response()
 @session_required()
 def api_post(user):
-    return dict()
+    data = request.args if request.method == 'GET' else request.form
+    post_id = data.get('post_id', None)
+    if request.method == 'GET':
+        if post_id == None:
+            raise Exception('post id is required')
+        p = Post.query.filter_by(id=post_id)
+    elif request.method == 'POST':
+        text = data.get('text', None)
+        if text == None:
+            raise Exception('text is required')
+        image = data.get('image', None)
+        if image == None:
+            raise Exception('image is required')
+        p = Post(user, text, image)
+    db.session.add(p)
+    db.session.commit()
+    return dict(
+        created_at = p.created_at,
+        author_id = p.author_id,
+        text = p.text,
+        image = p.image,
+    )
