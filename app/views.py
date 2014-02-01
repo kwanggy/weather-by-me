@@ -174,7 +174,7 @@ def api_post(user):
                 res = []
             else:
                 p = p.posts.all()
-                res = [ x.toJson() for x in p ]
+                res = [ x.toJson() for x in p ].reverse()
         else:
             raise Exception('post id or (latitude and longitude) is required')
     elif request.method == 'POST':
@@ -184,6 +184,7 @@ def api_post(user):
         image = request.files.get('image', None)
         if image == None:
             raise Exception('image is required')
+        log('image', image)
         lat = float(data.get('lat', None))
         if lat == None:
             raise Exception('latitude is required')
@@ -197,5 +198,26 @@ def api_post(user):
         p.setImage(image)
         db.session.commit()
         res = p.toJson()
-    log('res', res)
+    return res
+
+@app.route('/api/comment', methods=['POST'])
+@json_response()
+@session_required()
+def api_post(user):
+    data = request.args if request.method == 'GET' else request.form
+    if request.method == 'POST':
+        text = data.get('text', None)
+        if text == None:
+            raise Exception('text is required')
+        parent_id = data.get('parent_id', None)
+        if parent_id == None:
+            raise Exception('parent id is required')
+        parent = Post.query.filter_by(id=parent_id).first()
+        if parent == None:
+            raise Exception('parent not found')
+        
+        c = Comment(user, parent, text)
+        db.session.add(c)
+        db.session.commit()
+        res = c.toJson()
     return res

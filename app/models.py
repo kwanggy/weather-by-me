@@ -16,6 +16,7 @@ from util import log, totimestamp, sendmail, allowed_file
 
 def getTagXY(lat, lng):
     n = 3
+    # west lafayette
     loc_a = 40.442767,-86.930378
     loc_b = 40.409575,-86.886604
     w = loc_a[0] - loc_b[0]
@@ -82,7 +83,7 @@ class User(db.Model):
     def toJson(self, recursive=False):
         d = dict(
             user_id = self.id,
-            created_at = self.created_at,
+            created_at = totimestamp(self.created_at),
             email = self.email,
             name = self.name,
             pic = self.pic,
@@ -159,7 +160,7 @@ class Post(db.Model):
     def toJson(self):
         d = dict(
             post_id = self.id,
-            created_at = self.created_at,
+            created_at = totimestamp(self.created_at),
             author = self.author.toJson(False),
             text = self.text,
             image = self.image,
@@ -191,6 +192,7 @@ class Comment(db.Model):
     def toJson(self):
         return dict(
             comment_id = self.id,
+            created_at = totimestamp(self.created_at),
             author = self.author.toJson(False),
             parent_id = self.parent_id,
             text = self.text,
