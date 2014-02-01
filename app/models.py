@@ -22,19 +22,17 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     pw = db.Column(db.String)
     name = db.Column(db.String)
-    session_key = db.Column(db.String, db.ForeignKey('session.key'))
-    session = db.relationship('Session',
-        backref=db.backref('user', lazy='dynamic'))
+    session = db.relationship('Session', backref='owner', lazy='dynamic')
+    role = db.Column(db.String)
 
-    def __init__(self, email, pw, name):
+    def __init__(self, email, pw, name, role=None):
         self.created_at = datetime.utcnow()
         self.email = email
         self.pw = pw
         self.name = name
+        self.role = role
 
         self.set_session()
-        # send email with session
-        sendmail()
 
     def make_session(self):
         if self.session != None:
@@ -47,7 +45,10 @@ class User(db.Model):
         self.session = session
 
     def check_session(self, key):
-        return self.session_key == key
+        return self.session.key == key
+
+    def new_post(title, image, parent=None):
+        Post(title, image, self, parent)
         
 
 class Session(db.Model):
@@ -59,5 +60,20 @@ class Session(db.Model):
         self.created_at = datetime.utcnow()
         self.key = str(uuid.UUID(bytes = OpenSSL.rand.bytes(16)))
 
+class Post(db.Model):
+    created_at = db.Column(db.DateTime)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    image = db.Column(db.String)
+    author = db.relationship('User', backref='posts', lazy='dynamic')
+    parent = db.relationship('Post', backref='comments', lazy='dynamic')
+
+    def __init__(self, title, image, author, parent=None):
+        self.created_at = datetime.utcnow()
+        self.title = title
+        self.image = image
+        self.author = author
+        self.parent = parent
+    
 
 db.create_all()
