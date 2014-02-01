@@ -10,10 +10,10 @@ function signup(form_id, callback) {
     	if (data['status_code'] == 200) {
   			top.session_key = data['session_key']
   			if (callback)
-  				callback(true);
+  				callback(true, data);
   		} else {
   			if (callback)
-  				callback(false)
+  				callback(false, data);
   		}
     });
 }
@@ -27,9 +27,9 @@ function signin(email, pw, callback) {
   	function(data, status){
   		if (data['status_code'] == 200) {
   			top.session_key = data['session_key']
-  			callback(true);
+  			callback(true, data);
   		} else {
-  			callback(false)
+  			callback(false, data);
   		}
     	alert("Data: " + data + "\nStatus: " + status);
   	});	

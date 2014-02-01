@@ -6,15 +6,31 @@
     max-width: 330px;
     margin:0 auto;
 ">
-        <h2 class="form-signin-heading">Sign in</h2>
-        <input type="email" class="form-control" placeholder="Email address" required="" autofocus="">
-        <input type="password" class="form-control" placeholder="Password" required="">
-        <div class="form-group btns" style="margin-top:10px">
-          <div class="pull-right col-lg-12">
-            <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Sign In</button>
-          </div>
+      <h2 class="form-signin-heading">Sign In</h2>
+      <input type="email" class="form-control" placeholder="Email address" required="" autofocus="">
+      <input type="password" class="form-control" placeholder="Password" required="">
+      <div class="form-group btns" style="margin-top:10px">
+        <div class="pull-right col-lg-12">
+          <a id="send"  class="btn btn-success" style="font-size:small;padding:8px 14px">Sign Up</a>
         </div>
+      </div>
   </form>
 
 </div> <!-- /container -->
+<script>
+$(document).ready(function() {
+  document.getElementById("uploadBtn").onchange = function () {
+      var rawstring = this.value.trim().split("\\");
+      document.getElementById("uploadFile").value = rawstring[rawstring.length-1];
+  };
+
+  $('#send').click(function() {
+    signup("#signup-form", function(success, data) {
+        if (success) {
+            location.href = "/";
+        }
+    });
+  });
+});
+</script>
 {% endblock %}
