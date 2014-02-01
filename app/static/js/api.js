@@ -1,6 +1,7 @@
 function signup(form_id) {
-	var formData = new FormData($(image_form_id)[0]);
-	$.ajax({"api/signup",
+	var formData = new FormData($(form_id)[0]);
+	
+	$.ajax({url: "/api/signup",
 			type: 'POST',
 			data: formData,
             contentType: false,
@@ -32,17 +33,17 @@ function signin(email, pw, callback) {
   	});	
 }
 
-function post(form_id) {
-	var formData = new FormData($(form_id)[0]);
-	$.ajax({"api/post",
-			type: 'POST',
-			data: formData,
-            contentType: false,
-            processData: false
-    }).done(function( data ) {
+// function post(form_id) {
+// 	var formData = new FormData($(form_id)[0]);
+// 	$.ajax({"api/post",
+// 			type: 'POST',
+// 			data: formData,
+//             contentType: false,
+//             processData: false
+//     }).done(function( data ) {
 
-    });
-}
+//     });
+// }
 
 
 	// $.post("api/signup",

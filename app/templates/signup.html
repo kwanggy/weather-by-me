@@ -1,4 +1,3 @@
-
 {% extends "layout.html" %}
 {% block body %}
 <style>
@@ -20,7 +19,7 @@
 </style>        
 <div class="container jumbotron" style="text-align:left">
 
-  <form id="signup-form" class="form-signin" method="post" role="form" style="
+  <form id="signup-form" class="form-signin" role="form" action="#" style="
     max-width: 330px;
     margin:0 auto;">
     <h2 class="form-signin-heading">Sign up</h2>
@@ -66,7 +65,7 @@
 
       <div class="form-group btns" style="margin-top:10px">
         <div class="pull-right col-lg-12">
-          <button id="send" type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Submit</button>
+          <a id="send"  class="btn btn-success" style="font-size:small;padding:8px 14px">Submit</a>
         </div>
       </div>
   </form>
@@ -81,7 +80,7 @@ $(document).ready(function() {
 
   $('#send').click(function() {
     signup("#signup-form");
-  })
-}
+  });
+});
 </script>
 {% endblock %}
