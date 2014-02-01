@@ -1,5 +1,5 @@
 .plus_gly {
-    font-weight: bolder;  
+  font-weight: bolder;  
   color: #ffffff;
 }
 
@@ -11,11 +11,13 @@
 
 body {
 	background-color: #9DAABD;
+	margin: auto;
 }
 
 .card {
 	min-height: 200px;
-	background: rgba(255, 255, 255, .5);
+	background: rgba(255, 255, 255, .6);
+	margin-bottom: 50px;
 }
 
 .card-component {
@@ -24,12 +26,17 @@ body {
 
 .horizontal-divider {
 	background-color: #9DAABD;
-	width: 100%;
+	width: 96%;
 	height: 1px;
 }
 
 .card-divider {
 	top: 50px;
+}
+
+.replies-divider {
+	margin-top:1px;
+	width: 90%;
 }
 
 .card-profile {
@@ -49,23 +56,77 @@ body {
 
 .card-title {
 	left: 72px;
-	top: 11px;
+	top: 13px;
 	/*color: #9DAABD;*/
-	color: #fff;
+	color: #666;
 }
 
 .card-time {
-	top: 11px;
+	top: 13px;
 	right: 25px;
 	color: #9DAABD;
 }
 
 .card-image {
 	width: 98%;
-
 	margin: auto;
-	margin-top: 57px;
+	margin-top: 60px;
 	margin-left: 1%;
-	margin-bottom: 7px;
+	padding-bottom: 50px;
+	/*margin-bottom: 50px;*/
 }
 
+.card-replies-link {
+	bottom: 10px;
+	left: 25px;
+	color: #666;
+	margin: 2px;
+}
+.card-replies-link:hover {
+	font-weight: bold;
+}
+
+.card-reply-link {
+	bottom: 10px;
+	right: 25px;
+	color: #666;
+	margin: 2px;
+}
+.card-reply-link:hover {
+	font-weight: bold;
+}
+
+
+.card-reply-profile {
+	float: left;
+	width:48px;
+	height:48px;
+	margin: 3px;
+	margin-left: 7px;
+}
+
+.reply-container {
+	width: 100%;
+	/*height: 50px;*/
+	background: rgba(255, 255, 255, .6);
+	padding-bottom: 10px;
+
+}
+
+.reply-name {
+	color: #666;
+	font-weight: bold;
+	margin-top: 0px;
+}
+
+.reply-content {
+	color: #666;
+	font-weight: lighter;
+	margin: 5px;
+}
+
+.input-group-reply {
+	bottom: 0px;
+	margin: auto;
+	/*width: 70%*/
+}
