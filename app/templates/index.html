@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
+
+  {% if 'session_key' not in session %}
   <div class="jumbotron">
     <h1>Weather by me</h1>
     <p class="lead">
@@ -7,6 +9,7 @@
     </p>
     <p><a class="btn btn-lg btn-success" href="{{ url_for('signup_page') }}" role="button">Sign Up</a></p>
   </div>
+  {% endif %}
 
   <div class="modal fade" id='add-reply-modal'>
     <div class="modal-dialog">

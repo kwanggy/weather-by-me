@@ -42,7 +42,7 @@ class User(db.Model):
     def set_session(self, session):
         if self.session:
             db.session.delete(self.session)
-        self.session = Session()
+        self.session = session
 
     def check_session(self, key):
         return self.session.key == key

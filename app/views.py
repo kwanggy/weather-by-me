@@ -43,10 +43,11 @@ def session_required():
             data = request.args if request.method == 'GET' else request.form
             key = None
             key = session.get('session_key', None)
-            session.pop('session_key', None)
             key = key or data.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
+            session.pop('session_key', None)
+            return f(None)
 
             s = Session.query.filter_by(key=key).first()
             if s == None:
@@ -111,7 +112,18 @@ def signin_page():
     
 @app.route('/signup')
 def signup_page():
+    session.pop('session_key', None)
     return render_template('signup.html')
+
+@app.route('/signout')
+@session_required()
+def signout_page(user):
+    '''
+    user.set_session(None)
+    db.session.commit()
+    session.pop('session_key', None)
+    '''
+    return redirect(url_for('index_page'))
     
 @app.route('/api/reset')
 @json_response()
