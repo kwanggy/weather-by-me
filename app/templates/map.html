@@ -8,21 +8,25 @@
 </script>
 <script type="text/javascript">
 
-  function initialize() {
+  function initMap() {
+
 	navigator.geolocation.getCurrentPosition(setMapFrom);
   }
 
   function setMapFrom(latlng) {
-  		console.log(latlng);
-  		console.log(latlng.coords.latitude);
-  	  var mapOptions = {
-      center: new google.maps.LatLng(latlng.coords.latitude, latlng.coords.lngitude),
-      zoom: 10
+  	console.log(latlng);
+  	console.log(latlng.coords.latitude);
+  	var mapOptions = {
+    	center: new google.maps.LatLng(latlng.coords.latitude, latlng.coords.longitude),
+    	zoom: 10
     };
     top.map = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
   }
-  google.maps.event.addDomListener(window, 'load', initialize);
+
+  google.maps.event.addDomListener(window, 'load', function() {
+  	window.setTimeout(initMap, 1000);
+  });
 
   $(document).ready(function() {
 	  function initialize(res, data) {
