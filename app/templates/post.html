@@ -1,63 +1,42 @@
 {% extends "layout.html" %}
 {% block body %}
-  <div class="jumbotron">
-    <h1>Weather by me</h1>
-    <p class="lead">
-        Join weather by me today!
-    </p>
-    <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up</a></p>
-  </div>
-  <div class="row marketing">
-    <div class"col-lg-4 col-lg-offset-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">COMMENTS</div>
-                <ul class ="list-group">
-                    <li class="list-group-item">
-                        <div class="media">
-                           <a class="pull-left" href="#">
-                            <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.dailynewsegypt.com/beta/wp-content/uploads/2014/01/8-27.jpg">
-                           </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">USER NAME</h4>
-                                    body goes here
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                           <a class="pull-left" href="#">
-                            <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.dailynewsegypt.com/beta/wp-content/uploads/2014/01/8-27.jpg">
-                           </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">USER NAME</h4>
-                                    body goes here
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                           <a class="pull-left" href="#">
-                            <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.dailynewsegypt.com/beta/wp-content/uploads/2014/01/8-27.jpg">
-                           </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">USER NAME</h4>
-                                    body goes here
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                           <a class="pull-left" href="#">
-                            <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.dailynewsegypt.com/beta/wp-content/uploads/2014/01/8-27.jpg">
-                           </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">USER NAME</h4>
-                                    body goes here
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-    </div>
-  </div>
+<div class="container jumbotron" style="text-align:left">
 
+  <form class="form-signin" role="form" style="
+    max-width: 330px;
+    margin:0 auto;
+">
+        <h2 class="form-signin-heading">Add New Post</h2>
+
+                  <div class="form-group" style="margin-bottom:0">
+                    <label for="inputEmail" class="col-lg-2 control-label">Title</label>
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="inputEmail" placeholder="Title">
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom:0">
+                    <label for="inputPassword" class="col-lg-2 control-label">Text</label>
+                    <div class="col-lg-10">
+                      <textarea class="form-control" rows='4' placeholder="Enter texts..."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom:0">
+                    <label for="inputPassword" class="col-lg-2 control-label">Image</label>
+                    <input type='file' style="padding-left:15px">
+                  </div>
+
+          <div class="pull-right col-lg-12">
+            <button type="submit" class="btn btn-success" style="font-size:small;padding:8px 14px">Post</button>
+          </div>
+        </div>
+        
+
+
+
+
+  </form>
+
+</div> <!-- /container -->
 {% endblock %}
