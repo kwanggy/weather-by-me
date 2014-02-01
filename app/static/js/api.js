@@ -22,8 +22,8 @@ function request(url, form_id, callback) {
         url: url,
         type: 'POST',
         data: formData,
-        contentType: processData,
-        processData: processData
+        contentType: false,
+        processData: false, 
     }).done(function(data, status) {
     	if (data['status_code'] == 200) {
   			//top.session_key = data['session_key']
