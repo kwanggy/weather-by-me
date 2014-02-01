@@ -23,10 +23,10 @@ def getTagXY(lat, lng):
     h = loc_a[1] - loc_b[1]
     lat_diff = lat - loc_a[0]
     lng_diff = lng - loc_a[1]
-    x = (int)(lat_diff / (w/n))
-    y = (int)(lng_diff / (h/n))
+    x = (lat_diff / (w/n))
+    y = (lng_diff / (h/n))
     log(lat, lng, x, y)
-    return (x, y)
+    return ((int)(x), (int)(y))
 
 class User(db.Model):
     created_at = db.Column(db.DateTime)

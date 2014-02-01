@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-from .models import User, Session, Post, Tag, getTagXY
+from .models import User, Session, Post, Comment, Tag, getTagXY
 from .config import conf
 from util import log
 

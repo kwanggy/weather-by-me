@@ -3,14 +3,15 @@ $(function() {
         location.href = "/post";
     });
     $("#send-reply").click(function() {
-        var text = $('#comment-text').value;
+        var text = $('#comment-text')[0].value;
         var parent_id = top.current_post_id;
         requestWithData('/api/comment', {
-            text: text,
-            parent_id: parent_id,
+            'text': text,
+            'parent_id': parent_id,
         }, function(success, data) {
             if (success) {
                 console.log(data);
+                location.href = '/';
             }
         });
     });
@@ -21,12 +22,11 @@ function request(url, form_id, callback) {
     return requestWithData(url, formData, callback);
 }
 function requestWithData(url, data, callback) {
+    console.log(data);
 	$.ajax({
         url: url,
         type: 'POST',
         data: data,
-        contentType: false,
-        processData: false
     }).done(function(data, status) {
     	if (data['status_code'] == 200) {
   			//top.session_key = data['session_key']
@@ -53,7 +53,6 @@ function onPositionUpdateForGet(position)
 }
 
 function postGet(lat, lng) {
-	alert(lat + ", " + lng);
 	$.ajax({
     	type: "GET",
     	data: "lat="+lat+"&lng="+lng,
