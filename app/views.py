@@ -42,7 +42,7 @@ def session_required():
         def wrapped():
             data = request.args if request.method == 'GET' else request.form
             key = None
-            # key = session.get('session_key', None)
+            key = session.get('session_key', None)
             session.pop('session_key', None)
             key = key or data.get('session_key', None)
             if key == None:
