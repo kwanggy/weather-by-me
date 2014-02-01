@@ -111,6 +111,7 @@ def reset():
         if not conf['sys']['test-mode']:
             db.engine.execute('DROP TABLE "user" CASCADE')
             db.engine.execute('DROP TABLE "session" CASCADE')
+            db.engine.execute('DROP TABLE "post" CASCADE')
         else:
             db.drop_all()
     except:
@@ -129,3 +130,9 @@ def api_signup(user):
 @userinfo_required()
 def api_signin(user):
     return newSessionKey(user)
+
+@app.route('/api/post', methods=['GET', 'POST'])
+@json_response()
+@userinfo_required()
+def api_post(user):
+    return dict()
