@@ -9,8 +9,9 @@ $(function() {
             text: text,
             parent_id: parent_id,
         }, function(success, data) {
-            console.log(success);
-            console.log(data);
+            if (success) {
+                console.log(data);
+            }
         });
     });
 });
