@@ -41,9 +41,8 @@ def session_required():
     def decorator(f):
         def wrapped():
             data = request.args if request.method == 'GET' else request.form
-            key = None
             key = session.get('session_key', None)
-            key = key or data.get('session_key', None)
+            key = data.get('session_key', None) if key == None else key
             if key == None:
                 raise Exception('session key is required')
 
@@ -90,8 +89,6 @@ def userinfo_required(create=False):
                 u.set_session(s)
                 db.session.add(s)
                 db.session.commit()
-
-            session['session_key'] = u.session_key
             return f(u)
         return update_wrapper(wrapped, f)
     return decorator
@@ -101,6 +98,7 @@ def newSessionKey(user):
     user.set_session(s)
     db.session.add(s)
     db.session.commit()
+    session['session_key'] = user.session_key
     return dict(session_key=user.session_key)
 
 
@@ -114,7 +112,6 @@ def signin_page():
     
 @app.route('/signup')
 def signup_page():
-    session.pop('session_key', None)
     return render_template('signup.html')
 
 @app.route('/signout')
