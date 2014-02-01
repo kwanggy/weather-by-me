@@ -9,10 +9,8 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtam7keU0dNlSmcrdmBG3X4Gz
 <script type="text/javascript">
 
 function initialize(res, data) {
-	alert('asdf');
 	console.log(data);
 	for (i = 0; i < data.length; i++) {
-		alert('adding');
 		var post = data[i];
 		// var title = post['text'];
 		// var id = post['post_id'];
@@ -85,7 +83,6 @@ google.maps.event.addDomListener(window, 'load', function() {
 
 
 $(document).ready(function() {
-	alert('ready');
 
 	togglePostGet(initialize);
 
