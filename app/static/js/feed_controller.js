@@ -55,7 +55,7 @@ FeedController.prototype = {
         a =	'<div class="row">' + 
 		    '<div class="col-lg-6">' + 
 		      '<div id="card' + id + '" class="card" >' + 
-		        '<div class="card-component card-profile-container img-circle"></div>'
+		        '<div class="card-component card-profile-container img-circle"></div>' +
 		        '<img src="' + pic + '" class="img-circle card-component card-profile" style=""/>' + 
 		        '<div class="horizontal-divider card-component card-divider"></div>' + 
 		        '<div class="card-component card-title">' + title + '</div>' + 

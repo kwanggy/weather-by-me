@@ -69,7 +69,7 @@ class User(db.Model):
         if pic and allowed_file(pic.filename, allowed_extensions):
             ext = pic.filename.rsplit('.', 1)[1]
             filename = secure_filename('profile_%d.%s' % (self.id, ext))
-            path = conf['upload']['upload_folder']
+            path = os.path.join('app', conf['upload']['upload_folder'])
             path = os.path.join(path, 'profile')
             try:
                 os.makedirs(path)
@@ -146,7 +146,7 @@ class Post(db.Model):
         if image and allowed_file(image.filename, exts):
             ext = image.filename.rsplit('.', 1)[1]
             filename = secure_filename('image_%d.%s' % (self.id, ext))
-            path = conf['upload']['upload_folder']
+            path = os.path.join('app', conf['upload']['upload_folder'])
             path = os.path.join(path, 'image')
             try:
                 os.makedirs(path)
