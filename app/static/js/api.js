@@ -20,10 +20,10 @@ function request(url, form_id, callback) {
 
 function togglePostGet(callback) {
 	top.postGetCallback = callback;
-	navigator.geolocation.getCurrentPosition(onPositionUpdate);
+	navigator.geolocation.getCurrentPosition(onPositionUpdateForGet);
 }
 
-function onPositionUpdate(position)
+function onPositionUpdateForGet(position)
 {
     lat = position.coords.latitude;
     lng = position.coords.longitude;
@@ -44,6 +44,43 @@ function postGet(lat, lng) {
 			top.postGetCallback(false, []);
 		}
 	});
+}
+
+
+function togglePostPost(form_id, callback) {
+  top.postPostCallback = callback;
+  top.postPostFormId = form_id;
+  
+}
+
+function onPositionUpdateForPost(position) {
+    lat = position.coords.latitude;
+    lng = position.coords.longitude;
+    // alert("Current position: " + lat + " " + lng);
+    postPost(lat, lng);
+}
+
+function postPost(lat, lng) {
+  var formData = new FormData($(top.postPostFormId)[0]);
+  formData.append('lat', lat);
+  formData.append('lng', lng);
+  $.ajax({
+        url: '/api/post',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false
+    }).done(function(data, status) {
+      if (data['status_code'] == 200) {
+        //top.session_key = data['session_key']
+        if (callback)
+          callback(true, data);
+      } else {
+        if (callback)
+          callback(false, data);
+      }
+    });
+
 }
 // function post(form_id) {
 // 	var formData = new FormData($(form_id)[0]);

@@ -65,7 +65,12 @@ $(document).ready(function() {
   };
 
   $('#send').click(function() {
-    signup("#post-form", function() {});
+    request('/api/post', "#post-form", function(res, data) {
+      alert(data);
+      if (res) {
+        self.location = '/';
+      }
+    });
   });
 });
 </script>
