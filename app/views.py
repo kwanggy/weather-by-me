@@ -136,7 +136,11 @@ def post_page(user):
 def reset():
     try: 
         if not conf['sys']['test']:
-            db.engine.execute('DROP TABLE * CASCADE')
+            db.engine.execute('DROP TABLE "user" CASCADE')
+            db.engine.execute('DROP TABLE "session" CASCADE')
+            db.engine.execute('DROP TABLE "tag" CASCADE')
+            db.engine.execute('DROP TABLE "post" CASCADE')
+            db.engine.execute('DROP TABLE "comment" CASCADE')
         else:
             db.drop_all()
     except Exception as e:
