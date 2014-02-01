@@ -91,10 +91,11 @@ $(document).ready(function() {
             'reply' : comment['text']
         });
       }
-      top.commentsMap[i] = commentsList;
+      top.commentsMap[id] = commentsList;
     }
-    for (key in top.repliesMap) {
-      $('#' + key).html(top.repliesMap[key].length + " comments");
+    feedController.init();
+    for (key in top.commentsMap) {
+      $('#' + key).html(top.commentsMap[key].length + " comments");
     }
   }
 

@@ -5,6 +5,7 @@ FeedController.prototype = {
 	init : function() {
 		$('.card-replies-link').click(function() {
 			var id = $(this).attr('id');
+            console.log(id);
 			var divID = '#card' + id;
 			var cardHeight = $(divID).height();
 

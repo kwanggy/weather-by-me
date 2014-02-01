@@ -17,7 +17,8 @@ body {
 .card {
 	min-height: 200px;
 	background: rgba(255, 255, 255, .6);
-	margin-bottom: 50px;
+    margin-bottom: 50px;
+	margin-top: 30px;
 }
 
 .card-component {

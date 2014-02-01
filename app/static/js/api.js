@@ -19,7 +19,22 @@ $(function() {
 
 function request(url, form_id, callback) {
 	var formData = new FormData($(form_id)[0]);
-    return requestWithData(url, formData, callback);
+	$.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        contentType: processData,
+        processData: processData
+    }).done(function(data, status) {
+    	if (data['status_code'] == 200) {
+  			//top.session_key = data['session_key']
+  			if (callback)
+  				callback(true, data);
+  		} else {
+  			if (callback)
+  				callback(false, data);
+  		}
+    });
 }
 function requestWithData(url, data, callback) {
     console.log(data);
@@ -28,9 +43,6 @@ function requestWithData(url, data, callback) {
         type: 'POST',
         data: data,
     }).done(function(data, status) {
-      alert(data.result);
-      alert(data.error);
-      
     	if (data['status_code'] == 200) {
   			//top.session_key = data['session_key']
   			if (callback)
