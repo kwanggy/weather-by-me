@@ -16,12 +16,17 @@ User have tickets per each ride
 '''
 
 
+def writeFile(filename, bytes):
+    pass
+
+
 class User(db.Model):
     created_at = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True)
     pw_hash = db.Column(db.String)
     name = db.Column(db.String)
+    pic = db.Column(db.String)
     session_key = db.Column(db.String, db.ForeignKey('session.key'))
     session = db.relationship('Session',
         backref=db.backref('owner', lazy='dynamic'))
@@ -56,6 +61,11 @@ class User(db.Model):
 
     def new_post(self, title, image, parent=None):
         Post(title, image, self, parent)
+
+    def setProfilePic(self, pic):
+        filename = 'profile_%d.png' % self.id
+        writeFile(filename, pic)
+        self.pic = '/static/%s' % filename
         
 
 class Session(db.Model):
@@ -67,29 +77,39 @@ class Session(db.Model):
         self.created_at = datetime.utcnow()
         self.key = str(uuid.UUID(bytes = OpenSSL.rand.bytes(16)))
 
+
 class Post(db.Model):
     created_at = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    image = db.Column(db.String)
     author_id = db.Column(db.String, db.ForeignKey('user.id')) 
     author = db.relationship('User',
         backref=db.backref('posts', lazy='dynamic'))
-    parent_id = db.Column(db.Integer, primary_key=True)
-    parent = None
+    text = db.Column(db.String)
+    image = db.Column(db.String)
 
-    def __init__(self, title, image, author, parent=None):
+    def __init__(self, author, text, image):
         self.created_at = datetime.utcnow()
-        self.title = title
-        self.image = image
         self.author = author
-    
-    def set_parent(parent):
-        self.parent = parent
-        if self.parent:
-            self.parent_id = self.parent.id
-        else:
-            self.parent_id = None
+        self.text = text
+        self.image = image
+
+
+class Comment(db.Model):
+    created_at = db.Column(db.DateTime)
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.String, db.ForeignKey('user.id')) 
+    author = db.relationship('User',
+        backref=db.backref('comments', lazy='dynamic'))
+    post_id = db.Column(db.String, db.ForeignKey('post.id'))
+    post = db.relationship('Post',
+        backref=db.backref('comments', lazy='dynamic'))
+    text = db.Column(db.String)
+
+    def __init__(self, author, post, text):
+        self.created_at = datetime.utcnow()
+        self.author = author
+        self.post = post
+        self.text = text
     
 
 db.create_all()
