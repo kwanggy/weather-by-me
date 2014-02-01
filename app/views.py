@@ -121,7 +121,12 @@ def signout_page(user):
     db.session.commit()
     session.pop('session_key', None)
     return redirect(url_for('index_page'))
-    
+
+@app.route('/post_page')
+@session_required()
+def post_page(user):
+    return render_template('post.html')
+
 @app.route('/api/reset')
 @json_response()
 def reset():

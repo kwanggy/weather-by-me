@@ -84,7 +84,6 @@ class User(db.Model):
             d['posts'] = [ x.toJson() for x in self.posts.all() ]
         return d
         
-        
 
 class Session(db.Model):
     created_at = db.Column(db.DateTime)

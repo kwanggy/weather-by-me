@@ -74,8 +74,8 @@ $(document).ready(function() {
       for (t = 0; t < comments.length; t++) {
         var comment = comments[t];
         l.push({
-            'profile_url' : comment['author']['pic']
-            'name' : comment['author']['name']
+            'profile_url' : comment['author']['pic'],
+            'name' : comment['author']['name'],
             'reply' : comment['text']
         });
       }
@@ -90,6 +90,8 @@ $(document).ready(function() {
   for (key in top.repliesMap) {
     $('#' + key).html(top.repliesMap[key].length + " comments");
   }
+
+  
 });
 </script>
 {% endblock %}
