@@ -18,6 +18,8 @@ conf = {
         'database': None,
         'sender': 'unstoppable.little.spark@gmail.com'
     },
+    'upload': {
+    },
     'required': {
         'sys': [ 'database' ]
     }

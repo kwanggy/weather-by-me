@@ -1,23 +1,22 @@
 from datetime import datetime
+import os
 import uuid, OpenSSL
 
 from flask import *
+from werkzeug import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
 from . import app, db
 
-from util import totimestamp, sendmail
+from .config import conf
+from util import totimestamp, sendmail, allowed_file
 
 
 '''
 User have tickets per each ride
 '''
-
-
-def writeFile(filename, bytes):
-    pass
 
 
 class User(db.Model):
@@ -63,9 +62,19 @@ class User(db.Model):
         Post(title, image, self, parent)
 
     def setProfilePic(self, pic):
-        filename = 'profile_%d.png' % self.id
-        writeFile(filename, pic)
-        self.pic = '/static/%s' % filename
+        allowed_extensions = conf['upload']['allowed_extensions']
+        if pic and allowed_file(pic.filename, allowed_extensions):
+            ext = pic.filename.rsplit('.', 1)[1]
+            filename = secure_filename('profile_%d.%s' % (self.id, ext))
+            path = conf['upload']['upload_folder']
+            path = os.path.join(path, 'profile')
+            try:
+                os.makedirs(path)
+            except:
+                pass
+            path = os.path.join(path, filename)
+            pic.save(path)
+            self.pic = url_for('static', filename='profile/%s' % filename)
         
 
 class Session(db.Model):

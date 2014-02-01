@@ -40,10 +40,9 @@ def json_response():
 def session_required():
     def decorator(f):
         def wrapped():
-            if request.method == 'GET':
-                key = request.args.get('session_key', None)
-            elif request.method == 'POST':
-                key = request.form.get('session_key', None)
+            data = request.args if request.method == 'GET' else request.form
+            key = session.get('session_key', None)
+            key = key or data.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
 
@@ -72,11 +71,12 @@ def userinfo_required(create=False):
                 name = request.form.get('name', None)
                 if name == None:
                     raise Exception('name is required')
-                pic = request.form.get('pic', None)
+                pic = request.files.get('pic', None)
                 log('pic', pic)
 
                 u = User(email, pw, name)
                 db.session.add(u)
+                db.session.commit()
                 u.setProfilePic(pic)
                 db.session.commit()
             else:
@@ -85,6 +85,8 @@ def userinfo_required(create=False):
                     raise Exception('matching email address does not exist')
                 if not u.check_password(pw):
                     raise Exception('password does not match')
+
+            session['session_key'] = u.session_key
             return f(u)
         return update_wrapper(wrapped, f)
     return decorator

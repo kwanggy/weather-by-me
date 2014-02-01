@@ -66,3 +66,8 @@ def sendmail(sender, receiver, subject, content, cc=None, bcc=None):
     s.starttls()
     s.login(smtp['id'], smtp['pw'])
     s.sendmail(sender, [receivers] + cc + bcc, msg.as_string())
+
+
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and \
+               filename.rsplit('.', 1)[1] in allowed_extensions
