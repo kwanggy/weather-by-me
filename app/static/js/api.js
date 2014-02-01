@@ -2,14 +2,28 @@ $(function() {
     $("#add-post").click(function() {
         location.href = "/post";
     });
+    $("#send-reply").click(function() {
+        var text = $('#comment-text').value;
+        var parent_id = top.current_post_id;
+        requestWithData('/api/comment', {
+            text: text,
+            parent_id: parent_id,
+        }, function(success, data) {
+            console.log(success);
+            console.log(data);
+        });
+    });
 });
 
 function request(url, form_id, callback) {
 	var formData = new FormData($(form_id)[0]);
+    return requestWithData(url, formData, callback);
+}
+function requestWithData(url, data, callback) {
 	$.ajax({
         url: url,
         type: 'POST',
-        data: formData,
+        data: data,
         contentType: false,
         processData: false
     }).done(function(data, status) {
