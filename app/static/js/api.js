@@ -5,10 +5,9 @@ $(function() {
     $("#send-reply").click(function() {
         var text = $('#comment-text')[0].value;
         var parent_id = top.current_post_id;
-        requestWithData('/api/comment', {
-            'text': text,
-            'parent_id': parent_id,
-        }, function(success, data) {
+        requestWithData('/api/comment',
+            'text=' + text + '&parent_id=' + parent_id,
+            function(success, data) {
             if (success) {
                 console.log(data);
                 location.href = '/';
