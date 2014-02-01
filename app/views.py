@@ -178,7 +178,8 @@ def api_post(user):
                 res = []
             else:
                 p = p.posts.all()
-                res = [ x.toJson() for x in p ].reverse()
+                res = [ x.toJson() for x in p ]
+                res.reverse()
         else:
             raise Exception('post id or (latitude and longitude) is required')
     elif request.method == 'POST':
