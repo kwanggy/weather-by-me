@@ -1,0 +1,80 @@
+body {
+  padding-top: 70px;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+
+.container {
+  .jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 30px;
+    margin-bottom: 30px;
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 2.1428571435;
+    color: inherit;
+    background-color: #eeeeee;
+    
+    h1 {
+      margin-bottom: 42px;
+      text-align: center;
+    }
+    .btn {
+      font-size: 21px;
+      padding: 14px 24px;
+    }
+
+    &.signin, &.signup {
+      padding: 12px 30px;
+      text-align: left;
+      margin-bottom: 10px;
+
+      legend {
+        text-indent: 16px;
+        margin-bottom: 0px;
+      }
+      .btns {
+        text-align: right;
+      }
+    }
+  }
+}
+.no-account {
+  text-align: center;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+  h4 {
+    border-bottom: 1px solid #e5e5e5;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header, .marketing, .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
