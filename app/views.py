@@ -46,8 +46,6 @@ def session_required():
             key = key or data.get('session_key', None)
             if key == None:
                 raise Exception('session key is required')
-            session.pop('session_key', None)
-            return f(None)
 
             s = Session.query.filter_by(key=key).first()
             if s == None:
@@ -88,6 +86,10 @@ def userinfo_required(create=False):
                     raise Exception('matching email address does not exist')
                 if not u.check_password(pw):
                     raise Exception('password does not match')
+                s = Session()
+                u.set_session(s)
+                db.session.add(s)
+                db.session.commit()
 
             session['session_key'] = u.session_key
             return f(u)
@@ -118,11 +120,9 @@ def signup_page():
 @app.route('/signout')
 @session_required()
 def signout_page(user):
-    '''
     user.set_session(None)
     db.session.commit()
     session.pop('session_key', None)
-    '''
     return redirect(url_for('index_page'))
 
 @app.route('/post_page')
@@ -134,15 +134,14 @@ def post_page(user):
 @json_response()
 def reset():
     try: 
-        if not conf['sys']['test-mode']:
-            db.engine.execute('DROP TABLE "user" CASCADE')
-            db.engine.execute('DROP TABLE "session" CASCADE')
-            db.engine.execute('DROP TABLE "post" CASCADE')
+        if not conf['sys']['test']:
+            db.engine.execute('DROP TABLE * CASCADE')
         else:
             db.drop_all()
-    except:
-        pass
+    except Exception as e:
+        log('reset', e)
     db.create_all()
+    session.pop('session_key', None)
     return len(User.query.all())
     
 @app.route('/api/signup', methods=['POST'])
@@ -168,10 +167,13 @@ def api_post(user):
         lng = data.get('lng', None)
         if post_id == None or lat == None or lng == None:
             raise Exception('post id or (latitude and longitude) is required')
-        p = Post.query.filter_by(id=post_id).all()
-        p = p.all() if post_id == None else p.first()
-        if p == None:
+        p = Post.query.filter_by(id=post_id)
+        if p.first() == None:
             raise Exception('post id does not exist')
+        if post_id == None:
+            res = [ x.toJson() for x in p.all() ]
+        else:
+            res = p.first().toJson()
     elif request.method == 'POST':
         text = data.get('text', None)
         if text == None:
@@ -182,4 +184,5 @@ def api_post(user):
         p = Post(user, text, image)
         db.session.add(p)
         db.session.commit()
-    return p.toJson()
+        res = p.toJson()
+    return res
