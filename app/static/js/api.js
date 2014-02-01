@@ -1,4 +1,4 @@
-function signup(form_id) {
+function signup(form_id, callback) {
 	var formData = new FormData($(form_id)[0]);
 	
 	$.ajax({url: "/api/signup",
@@ -9,9 +9,11 @@ function signup(form_id) {
     }).done(function(data, status) {
     	if (data['status_code'] == 200) {
   			top.session_key = data['session_key']
-  			callback(true);
+  			if (callback)
+  				callback(true);
   		} else {
-  			callback(false)
+  			if (callback)
+  				callback(false)
   		}
     });
 }
