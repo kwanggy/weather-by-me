@@ -8,7 +8,7 @@ FeedController.prototype = {
 			var divID = '#card' + id;
 			var cardHeight = $(divID).height();
 
-			var replies = top.repliesMap[id];
+			var replies = top.commentsMap[id];
 			// cardHeight = cardHeight + replies.length * 50 ;
 			$(divID).animate({
 				height: cardHeight + "px",
@@ -48,7 +48,24 @@ FeedController.prototype = {
 			id = id.substr(id.length-1, 1);
 			top.current_post_id = id;
 
-			
+
 		});
+	},
+	getCard: function(id, pic, title, name, image, commentsLength) {
+		return
+		  '<div class="row">' + 
+		    '<div class="col-lg-6">' + 
+		      '<div id="card' + id + '" class="card" >' + 
+		        '<div class="card-component card-profile-container img-circle"></div>'
+		        '<img src="' + pic + '" class="img-circle card-component card-profile" style=""/>' + 
+		        '<div class="horizontal-divider card-component card-divider"></div>' + 
+		        '<div class="card-component card-title">' + title '</div>' + 
+		        '<div class="card-component card-time">2 hours ago</div>' +
+		        '<img class="card-image" id="card-image' + id + '" src="' + image + '"/>' + 
+		        '<div class="pull-left card-replies-link card-component" id="' + id + '">comments</div>' + 
+		        '<div class="pull-right card-reply-link card-component" id="add-reply' + id + '" data-toggle="modal" data-target="#add-reply-modal">add comment</div>' + 
+		      '</div>' + 
+		    '</div>' + 
+		  '</div>';
 	},
 };

@@ -35,6 +35,33 @@ function signin(email, pw, callback) {
   	});	
 }
 
+function togglePostGet(callback) {
+	top.postGetCallback = callback;
+	navigator.geolocation.getCurrentPosition(onPositionUpdate);
+}
+
+function onPositionUpdate(position)
+{
+    lat = position.coords.latitude;
+    lng = position.coords.longitude;
+    // alert("Current position: " + lat + " " + lng);
+    postGet(lat, lng);
+}
+
+function postGet(lat, lng) {
+	alert(lat + ", " + lng);
+	$.ajax({
+    	type: "GET",
+    	data: "lat="+lat+"&lng="+lng,
+    	url: "api/post"
+	}).done(function(data){
+		if (data['status_code'] == 200) {
+			top.postGetCallback(true, data['result']);
+		} else {
+			top.postGetCallback(false, []);
+		}
+	});
+}
 // function post(form_id) {
 // 	var formData = new FormData($(form_id)[0]);
 // 	$.ajax({"api/post",
