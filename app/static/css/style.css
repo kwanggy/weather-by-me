@@ -130,3 +130,7 @@ body {
 	margin: auto;
 	/*width: 70%*/
 }
+
+.modal {
+	margin-top: 45%;
+}

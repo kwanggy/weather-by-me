@@ -1,5 +1,5 @@
 function signup(email, pw, name, callback) {
-	$.post("demo_test_post.asp",
+	$.post("api/signup",
 	{
 		'email': email,
     	'pw': pw,
@@ -8,16 +8,17 @@ function signup(email, pw, name, callback) {
   	function(data, status){
   		if (data['status_code'] == 200) {
   			top.session_key = data['session_key']
+
   			callback(true);
   		} else {
   			callback(false)
   		}
-    	alert("Data: " + data + "\nStatus: " + status);
+    	// alert("Data: " + data['error'] + "\nStatus: " + status);
   	});
 }
 
 function signin(email, pw, callback) {
-	$.post("demo_test_post.asp",
+	$.post("api/signin",
 	{
 		'email': email,
     	'pw': pw,
@@ -32,3 +33,4 @@ function signin(email, pw, callback) {
     	alert("Data: " + data + "\nStatus: " + status);
   	});	
 }
+

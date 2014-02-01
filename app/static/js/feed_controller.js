@@ -13,7 +13,7 @@ FeedController.prototype = {
 			$(divID).animate({
 				height: cardHeight + "px",
 			}, 500, function() {
-
+				$(this).unbind('click');	
 				// $("#" + id).css('display', 'none');
 				// $(divID).scrollTop(cardHeight);
 				// $(divID).scrollTop(cardHeight);
@@ -41,6 +41,14 @@ FeedController.prototype = {
     //       							   '<span class="input-group-addon" id="reply-input-button' + id + '">add</span>' + 
     //     							   '</div>');
 			}.bind(this));
+		});
+
+		$('.card-reply-link').click(function() {
+			var id = $(this).attr('id');
+			id = id.substr(id.length-1, 1);
+			top.current_post_id = id;
+
+			
 		});
 	},
 };
