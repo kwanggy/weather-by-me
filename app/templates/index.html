@@ -73,13 +73,13 @@ $(document).ready(function() {
       var commentsList = [];
       for (t = 0; t < comments.length; t++) {
         var comment = comments[t];
-        l.push({
+        commentsList.push({
             'profile_url' : comment['author']['pic'],
             'name' : comment['author']['name'],
             'reply' : comment['text']
         });
       }
-      top.commentsMap[i] = l;
+      top.commentsMap[i] = commentsList;
     }
     for (key in top.repliesMap) {
       $('#' + key).html(top.repliesMap[key].length + " comments");
