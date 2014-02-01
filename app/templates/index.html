@@ -81,17 +81,19 @@ $(document).ready(function() {
       }
       top.commentsMap[i] = l;
     }
+    for (key in top.repliesMap) {
+      $('#' + key).html(top.repliesMap[key].length + " comments");
+    }
   }
+
+
   /*
   top.repliesMap = {
     '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
   }
   */
-  for (key in top.repliesMap) {
-    $('#' + key).html(top.repliesMap[key].length + " comments");
-  }
-
   
+  togglePostGet(initialize);
 });
 </script>
 {% endblock %}

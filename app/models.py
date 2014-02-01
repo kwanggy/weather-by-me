@@ -119,11 +119,10 @@ class Post(db.Model):
     tag = db.relationship('Tag',
         backref=db.backref('posts', lazy='dynamic'))
 
-    def __init__(self, author, text, image, lat, lng):
+    def __init__(self, author, text, lat, lng):
         self.created_at = datetime.utcnow()
         self.author = author
         self.text = text
-        self.setImage(image)
         self.lat = lat
         self.lng = lng
         self.setTag()
@@ -163,7 +162,7 @@ class Post(db.Model):
         self.tag = tag
 
     def toJson(self):
-        return dict(
+        d = dict(
             post_id = self.id,
             created_at = self.created_at,
             author = self.author.toJson(False),
@@ -171,10 +170,10 @@ class Post(db.Model):
             image = self.image,
             lat = self.lat,
             lng = self.lng,
-            tag = self.tag,
+            #tag = self.tag,
             comments = [ x.toJson() for x in self.comments.all() ],
         )
-            
+        return d
 
 
 class Comment(db.Model):

@@ -42,7 +42,7 @@ function postGet(lat, lng) {
 	$.ajax({
     	type: "GET",
     	data: "lat="+lat+"&lng="+lng,
-    	url: "api/post"
+    	url: "/api/post"
 	}).done(function(data){
 		if (data['status_code'] == 200) {
 			top.postGetCallback(true, data['result']);
@@ -57,6 +57,7 @@ function togglePostPost(form_id, callback) {
   top.postPostCallback = callback;
   top.postPostFormId = form_id;
   
+  navigator.geolocation.getCurrentPosition(onPositionUpdateForPost);
 }
 
 function onPositionUpdateForPost(position) {
@@ -79,11 +80,11 @@ function postPost(lat, lng) {
     }).done(function(data, status) {
       if (data['status_code'] == 200) {
         //top.session_key = data['session_key']
-        if (callback)
-          callback(true, data);
+        if (top.postPostCallback)
+          top.postPostCallback(true, data);
       } else {
-        if (callback)
-          callback(false, data);
+        if (top.postPostCallback)
+          top.postPostCallback(false, data);
       }
     });
 

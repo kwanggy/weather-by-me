@@ -24,18 +24,18 @@
     margin:0 auto;
 " enctype="multipart/form-data">
     <h2 class="form-post-heading">Add New Post</h2>
-
+<!-- 
       <div class="form-group" style="margin-bottom:0">
         <label for="inputTitle" class="col-lg-2 control-label">Title</label>
           <div class="col-lg-10">
             <input name='title' type="text" class="form-control" id="inputTitle" placeholder="Title">
           </div>
-      </div>
+      </div> -->
 
       <div class="form-group" style="margin-bottom:0">
-        <label for="inputTexts" class="col-lg-2 control-label">Text</label>
+        <label for="inputTexts" class="col-lg-2 control-label">Description</label>
         <div class="col-lg-10">
-          <textarea name="texts" id="inputTexts" class="form-control" rows='4' placeholder="Enter texts..."></textarea>
+          <textarea name="text" id="inputTexts" class="form-control" rows='4' placeholder="Enter description..."></textarea>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
           <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="form-control" />
           <div class="fileUpload btn btn-primary" style="font-size:small;padding:8px 14px"> 
             <span>Upload</span>
-            <input name="pic" id="uploadBtn" type="file" class="upload" style="width:73px;height:36px"/>
+            <input name="image" id="uploadBtn" type="file" class="upload" style="width:73px;height:36px"/>
           </div>
         </div>
       </div>
@@ -65,12 +65,18 @@ $(document).ready(function() {
   };
 
   $('#send').click(function() {
-    request('/api/post', "#post-form", function(res, data) {
+    togglePostPost('#post-form', function(res, data) {
       alert(data);
       if (res) {
-        self.location = '/';
+        window.location.href="/";
       }
     });
+    // request('/api/post', "#post-form", function(res, data) {
+    //   alert(data);
+    //   if (res) {
+    //     self.location = '/';
+    //   }
+    // });
   });
 });
 </script>

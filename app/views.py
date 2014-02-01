@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-from .models import User, Session, Post
+from .models import User, Session, Post, Tag
 from .config import conf
 from util import log
 
@@ -122,7 +122,7 @@ def signout_page(user):
     session.pop('session_key', None)
     return redirect(url_for('index_page'))
 
-@app.route('/post_page')
+@app.route('/post')
 @session_required()
 def post_page(user):
     return render_template('post.html')
@@ -160,26 +160,37 @@ def api_post(user):
     data = request.args if request.method == 'GET' else request.form
     if request.method == 'GET':
         post_id = data.get('post_id', None)
-        lat = data.get('lat', None)
-        lng = data.get('lng', None)
-        if post_id == None or lat == None or lng == None:
-            raise Exception('post id or (latitude and longitude) is required')
-        p = Post.query.filter_by(id=post_id)
-        if p.first() == None:
-            raise Exception('post id does not exist')
-        if post_id == None:
-            res = [ x.toJson() for x in p.all() ]
+        lat = float(data.get('lat', None))
+        lng = float(data.get('lng', None))
+        if post_id != None:
+            p = Post.query.filter_by(id=post_id).first()
+            if p == None:
+                raise Exception('post id does not exist')
+            res = p.toJson()
+        elif lat != None and lng != None:
+            p = Tag.query.filter_by(lat=lat, lng=lng).first().posts().all()
+            res = [ x.toJson() for x in p ]
         else:
-            res = p.first().toJson()
+            raise Exception('post id or (latitude and longitude) is required')
     elif request.method == 'POST':
         text = data.get('text', None)
         if text == None:
             raise Exception('text is required')
-        image = data.get('image', None)
+        image = request.files.get('image', None)
         if image == None:
             raise Exception('image is required')
-        p = Post(user, text, image)
+        lat = float(data.get('lat', None))
+        if lat == None:
+            raise Exception('latitude is required')
+        lng = float(data.get('lng', None))
+        if lng == None:
+            raise Exception('longitude is required')
+        
+
+        p = Post(user, text, lat, lng)
         db.session.add(p)
+        db.session.commit()
+        p.setImage(image)
         db.session.commit()
         res = p.toJson()
     return res
