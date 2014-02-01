@@ -109,14 +109,14 @@ class Tag(db.Model):
 class Post(db.Model):
     created_at = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.String, db.ForeignKey('user.id')) 
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id')) 
     author = db.relationship('User',
         backref=db.backref('posts', lazy='dynamic'))
     text = db.Column(db.String)
     image = db.Column(db.String)
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
-    tag_id = db.Column(db.String, db.ForeignKey('tag.id')) 
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id')) 
     tag = db.relationship('Tag',
         backref=db.backref('posts', lazy='dynamic'))
 
@@ -181,10 +181,10 @@ class Post(db.Model):
 class Comment(db.Model):
     created_at = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.String, db.ForeignKey('user.id')) 
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id')) 
     author = db.relationship('User',
         backref=db.backref('comments', lazy='dynamic'))
-    parent_id = db.Column(db.String, db.ForeignKey('post.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     parent = db.relationship('Post',
         backref=db.backref('comments', lazy='dynamic'))
     text = db.Column(db.String)
