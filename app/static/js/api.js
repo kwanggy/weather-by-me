@@ -21,7 +21,7 @@ function request(url, form_id, callback) {
 	$.ajax({
         url: url,
         type: 'POST',
-        data: data,
+        data: formData,
         contentType: processData,
         processData: processData
     }).done(function(data, status) {
