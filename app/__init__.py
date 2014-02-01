@@ -22,5 +22,4 @@ if db:
 # add some filters to jinja
 app.jinja_env.globals['urlencode'] = urllib.quote_plus
 
-from . import views  
-# from . import models, views
+from . import models, views
