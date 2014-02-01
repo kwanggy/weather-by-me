@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-# from .models import User, Session
+from .models import User, Session
 from .config import conf
 from util import log
 
@@ -96,3 +96,36 @@ def newSessionKey(user):
 def index_page():
     return render_template('index.html')
 
+@app.route('/signin')
+def signin_page():
+    return render_template('signin.html')
+    
+@app.route('/signup')
+def signup_page():
+    return render_template('signup.html')
+    
+@app.route('/api/reset')
+@json_response()
+def reset():
+    try: 
+        if not conf['sys']['test-mode']:
+            db.engine.execute('DROP TABLE "user" CASCADE')
+            db.engine.execute('DROP TABLE "session" CASCADE')
+        else:
+            db.drop_all()
+    except:
+        pass
+    db.create_all()
+    return len(User.query.all())
+    
+@app.route('/api/signup', methods=['POST'])
+@json_response()
+@userinfo_required(create=True)
+def api_signup(user):
+    return newSessionKey(user)
+
+@app.route('/api/signin', methods=['POST'])
+@json_response()
+@userinfo_required()
+def api_signin(user):
+    return newSessionKey(user)
