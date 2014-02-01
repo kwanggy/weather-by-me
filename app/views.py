@@ -5,7 +5,7 @@ from flask import *
 from functools import update_wrapper
 
 from . import app, db
-from .models import User, Session, Post, Tag
+from .models import User, Session, Post, Tag, getTagXY
 from .config import conf
 from util import log
 
@@ -168,8 +168,13 @@ def api_post(user):
                 raise Exception('post id does not exist')
             res = p.toJson()
         elif lat != None and lng != None:
-            p = Tag.query.filter_by(lat=lat, lng=lng).first().posts().all()
-            res = [ x.toJson() for x in p ]
+            x, y = getTagXY(lat, lng)
+            p = Tag.query.filter_by(x=x, y=y).first()
+            if p == None:
+                res = []
+            else:
+                p = p.posts.all()
+                res = [ x.toJson() for x in p ]
         else:
             raise Exception('post id or (latitude and longitude) is required')
     elif request.method == 'POST':
@@ -186,11 +191,11 @@ def api_post(user):
         if lng == None:
             raise Exception('longitude is required')
         
-
         p = Post(user, text, lat, lng)
         db.session.add(p)
         db.session.commit()
         p.setImage(image)
         db.session.commit()
         res = p.toJson()
+    log('res', res)
     return res

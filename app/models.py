@@ -11,13 +11,21 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from . import app, db
 
 from .config import conf
-from util import totimestamp, sendmail, allowed_file
+from util import log, totimestamp, sendmail, allowed_file
 
 
-'''
-User have tickets per each ride
-'''
-
+def getTagXY(lat, lng):
+    n = 3
+    loc_a = 40.442767,-86.930378
+    loc_b = 40.409575,-86.886604
+    w = loc_a[0] - loc_b[0]
+    h = loc_a[1] - loc_b[1]
+    lat_diff = lat - loc_a[0]
+    lng_diff = lng - loc_a[1]
+    x = (int)(lat_diff / (w/n))
+    y = (int)(lng_diff / (h/n))
+    log(lat, lng, x, y)
+    return (x, y)
 
 class User(db.Model):
     created_at = db.Column(db.DateTime)
@@ -125,7 +133,13 @@ class Post(db.Model):
         self.text = text
         self.lat = lat
         self.lng = lng
-        self.setTag()
+
+        x, y = getTagXY(lat, lng)
+        tag = Tag.query.filter_by(x=x, y=y).first()
+        if tag == None:
+            tag = Tag(x, y)
+            db.session.add(tag)
+        self.tag = tag
 
     def setImage(self, image):
         exts = conf['upload']['allowed_extensions']
@@ -141,25 +155,6 @@ class Post(db.Model):
             path = os.path.join(path, filename)
             image.save(path)
             self.image= url_for('static', filename='image/%s' % filename)
-
-    def getTagXY(self):
-        n = 3
-        loc_a = 40.442767,-86.930378
-        loc_b = 40.409575,-86.886604
-        w = loc_a[0] - loc_b[0]
-        h = loc_a[1] - loc_b[1]
-        lat_diff = self.lat - loc_a[0]
-        lng_diff = self.lng - loc_a[1]
-        x = (int)(lat_diff / (w/n))
-        y = (int)(lng_diff / (h/n))
-        return (x, y)
-        
-    def setTag(self):
-        x, y = self.getTagXY()
-        tag = Tag.query.filter_by(x=x, y=y).first()
-        if tag == None:
-            tag = Tag(x, y)
-        self.tag = tag
 
     def toJson(self):
         d = dict(
