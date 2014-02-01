@@ -1,6 +1,6 @@
 function signup(form_id) {
 	var formData = new FormData($(image_form_id)[0]);
-	$.ajax({"api/post",
+	$.ajax({"api/signup",
 			type: 'POST',
 			data: formData,
             contentType: false,
