@@ -1,77 +1,97 @@
 {% extends "layout.html" %}
 {% block head %}
 <style type="text/css">
-  #map-canvas { height: 700px; }
+#map-canvas { height: 400px; width: 100%;}
 </style>
 <script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtam7keU0dNlSmcrdmBG3X4GzwYB3b3ak&sensor=true">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtam7keU0dNlSmcrdmBG3X4GzwYB3b3ak&sensor=true">
 </script>
 <script type="text/javascript">
 
-  function initMap() {
+function initialize(res, data) {
+	alert('asdf');
+	console.log(data);
+	for (i = 0; i < data.length; i++) {
+		alert('adding');
+		var post = data[i];
+		// var title = post['text'];
+		// var id = post['post_id'];
+		var image_name = post['image'];
+		var lat = post['lat']
+		var lng = post['lng']
+
+		var myLatLng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+
+		marker = new google.maps.Marker({
+			map:map,
+			draggable:false,
+			animation: google.maps.Animation.DROP,
+			position: myLatLng
+		});
+		// var image = {
+		// 	url: image_name,
+		// 	// This marker is 20 pixels wide by 32 pixels tall.
+		// 	size: new google.maps.Size(20, 32),
+		// 	// The origin for this image is 0,0.
+		// 	origin: new google.maps.Point(0,0),
+		// 	// The anchor for this image is the base of the flagpole at 0,32.
+		// 	anchor: new google.maps.Point(0, 32)
+		// };
+		// var beachMarker = new google.maps.Marker({
+		// 	position: myLatLng,
+		// 	map: top.map,
+		// 	icon: image
+		// });
+
+
+		// var offset = Math.floor(Math.random() * 3) * 16; // pick one of the three icons in the sprite
+
+		// // Calculate desired pixel-size of the marker
+		// var size = Math.floor(4*(count-1) + 8);
+		// var scaleFactor = size/16;
+		// var marker = new google.maps.Marker({
+  //   	position: new google.maps.LatLng(float(lat), float(lng)),
+  //   	icon: new google.maps.MarkerImage(
+  //       image_name, // my 16x48 sprite with 3 circular icons
+  //       new google.maps.Size(16*scaleFactor, 16*scaleFactor), // desired size
+  //       new google.maps.Point(0, offset*scaleFactor), // offset within the scaled sprite
+  //       new google.maps.Point(size/2, size/2), // anchor point is half of the desired size
+  //       new google.maps.Size(16*scaleFactor, 48*scaleFactor) // scaled size of the entire sprite
+       
+    }
+};
+
+
+function initMap() {
 
 	navigator.geolocation.getCurrentPosition(setMapFrom);
-  }
+}
 
-  function setMapFrom(latlng) {
-  	console.log(latlng);
-  	console.log(latlng.coords.latitude);
-  	var mapOptions = {
-    	center: new google.maps.LatLng(latlng.coords.latitude, latlng.coords.longitude),
-    	zoom: 10
-    };
-    top.map = new google.maps.Map(document.getElementById("map-canvas"),
-        mapOptions);
-  }
+function setMapFrom(latlng) {
+	console.log(latlng);
+	console.log(latlng.coords.latitude);
+	var mapOptions = {
+		center: new google.maps.LatLng(latlng.coords.latitude, latlng.coords.longitude),
+		zoom: 10
+	};
+	top.map = new google.maps.Map(document.getElementById("map-canvas"),
+		mapOptions);
+	
+}
 
-  google.maps.event.addDomListener(window, 'load', function() {
-  	window.setTimeout(initMap, 1000);
-  });
-
-  $(document).ready(function() {
-	  function initialize(res, data) {
-	    for (i = 0; i < data.length; i++) {
-	      // var post = data[i];
-	      // var title = post['text'];
-	      // var id = post['post_id'];
-	      var image = post['image'];
-	      var name = post['author']['name'];
-	      var pic = post['author']['pic'];
-	      var commentsLength = post['comments'].length
-	      var created_at = post['created_at']
-	      
-	      var div = top.feedController.getCard(id, pic, title, name, image, commentsLength);
-	      console.log('div');
-	      console.log(div);
-	      $('#contents-container').append(div);
-
-	      var comments = post['comments']
-	      console.log(comments);
-	      var commentsList = [];
-	      for (t = 0; t < comments.length; t++) {
-	        var comment = comments[t];
-	        commentsList.push({
-	            'profile_url' : comment['author']['pic'],
-	            'name' : comment['author']['name'],
-	            'reply' : comment['text']
-	        });
-	      }
-	      top.commentsMap[i] = commentsList;
-	    }
-	    for (key in top.repliesMap) {
-	      $('#' + key).html(top.repliesMap[key].length + " comments");
-	    }
-	  }
+google.maps.event.addDomListener(window, 'load', function() {
+	window.setTimeout(initMap, 1000);
+});
 
 
-	  /*
-	  top.repliesMap = {
-	    '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
-	  }
-	  */
-	  
-	  // togglePostGet(initialize);
-  });
+$(document).ready(function() {
+	alert('ready');
+
+	togglePostGet(initialize);
+
+
+
+});
 </script>
 {% endblock %}
 

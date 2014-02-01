@@ -28,6 +28,9 @@ function requestWithData(url, data, callback) {
         type: 'POST',
         data: data,
     }).done(function(data, status) {
+      alert(data.result);
+      alert(data.error);
+      
     	if (data['status_code'] == 200) {
   			//top.session_key = data['session_key']
   			if (callback)
