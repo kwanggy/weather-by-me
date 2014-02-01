@@ -7,6 +7,26 @@
     </p>
     <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up</a></p>
   </div>
+
+  <div class="modal fade" id='add-reply-modal'>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Add Comment</h4>
+        </div>
+        <div class="modal-body">
+         <textarea class="form-control" rows="4"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="send-reply">Send</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
   <div class="row">
     <div class="col-lg-6">
       <div id="card1" class="card" >
@@ -16,8 +36,8 @@
         <div class="card-component card-title">Photo by Yuna Kim</div>
         <div class="card-component card-time">2 hours ago</div>
         <img class="card-image" id="card-image1" src="../static/img/posts/a.png"/>
-        <div class="card-component card-replies-link" id='1'>6 comments</div>
-        
+        <div class="pull-left card-replies-link card-component" id='1'>comments</div>
+        <div class="pull-right card-reply-link card-component" id='add-reply1' data-toggle="modal" data-target="#add-reply-modal">add comment</div>
       </div>
     </div>
 
@@ -37,7 +57,11 @@ $(document).ready(function() {
   feedController.init();
 
   top.repliesMap = {
-    '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
+    '1': [{'profile_url' : "../static/img/profiles/yuna2.png", 'name': 'yuna2', 'reply': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit dolor sit amet, consectetur adipisicing elit'}, {'profile_url' : "../static/img/profiles/yuna3.png", 'name': 'yuna3', 'reply': 'Lorem ipsum dolor sit amet, consectetur'}]
+  }
+
+  for (key in top.repliesMap) {
+    $('#' + key).html(top.repliesMap[key].length + " comments");
   }
 });
 </script>
