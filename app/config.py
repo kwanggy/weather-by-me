@@ -6,7 +6,7 @@ from util import set_timezone, set_dateform, log
 conf = {
     'sys': {
         'debug': True,
-        'port': 9020,
+        'port': 9060,
         'base_url': None,
         'secret_key': None,
         'timezone': 'America/New_York',
@@ -16,7 +16,6 @@ conf = {
         'max_tries': 3,
         'test': False,
         'database': None,
-        'sender': 'unstoppable.little.spark@gmail.com'
     },
     'upload': {
     },
