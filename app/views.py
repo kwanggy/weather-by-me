@@ -106,6 +106,10 @@ def newSessionKey(user):
 def index_page():
     return render_template('index.html')
 
+@app.route('/map')
+def map_page():
+    return render_template('map.html')
+    
 @app.route('/signin')
 def signin_page():
     return render_template('signin.html')
