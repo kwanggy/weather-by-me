@@ -45,6 +45,7 @@ function postGet(lat, lng) {
     	url: "/api/post"
 	}).done(function(data){
 		if (data['status_code'] == 200) {
+      console.log(data);
 			top.postGetCallback(true, data['result']);
 		} else {
 			top.postGetCallback(false, []);
