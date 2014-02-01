@@ -67,19 +67,22 @@ $(document).ready(function() {
       var created_at = post['created_at']
 
       var div = top.feedController.getCard(id, pic, title, name, image, commentsLength);
+      console.log('div');
+      console.log(div);
       $('.container').append(div);
 
       var comments = post['comments']
+      console.log(comments);
       var commentsList = [];
       for (t = 0; t < comments.length; t++) {
         var comment = comments[t];
-        l.push({
+        commentsList.push({
             'profile_url' : comment['author']['pic'],
             'name' : comment['author']['name'],
             'reply' : comment['text']
         });
       }
-      top.commentsMap[i] = l;
+      top.commentsMap[i] = commentsList;
     }
     for (key in top.repliesMap) {
       $('#' + key).html(top.repliesMap[key].length + " comments");

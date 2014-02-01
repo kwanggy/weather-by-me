@@ -52,8 +52,7 @@ FeedController.prototype = {
 		});
 	},
 	getCard: function(id, pic, title, name, image, commentsLength) {
-		return
-		  '<div class="row">' + 
+        a =	'<div class="row">' + 
 		    '<div class="col-lg-6">' + 
 		      '<div id="card' + id + '" class="card" >' + 
 		        '<div class="card-component card-profile-container img-circle"></div>'
@@ -67,5 +66,7 @@ FeedController.prototype = {
 		      '</div>' + 
 		    '</div>' + 
 		  '</div>';
+          console.log(a);
+          return a;
 	},
 };
